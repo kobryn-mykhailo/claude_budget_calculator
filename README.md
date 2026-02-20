@@ -1,6 +1,6 @@
 # Project Budget Calculator
 
-A web-based replacement for the ELEKS FPP (Fixed Price Project) budget estimation Excel template. This tool replicates and improves upon the multi-sheet Excel workflow with an interactive single-page application.
+A web-based replacement for the FPP (Fixed Price Project) budget estimation Excel template. This tool replicates and improves upon the multi-sheet Excel workflow with an interactive single-page application.
 
 ## Quick Start
 
