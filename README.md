@@ -78,4 +78,4 @@ See [GitHub Issues](https://github.com/kobryn-mykhailo/Claude-Code-Practice/issu
 
 ## Based On
 
-ELEKS Project Budget for FPP v7.3 template — calculation logic faithfully reproduced from the original Excel formulas.
+Project Budget for FPP v7.3 template — calculation logic faithfully reproduced from the original Excel formulas.
