@@ -400,7 +400,7 @@ const defaultProject = () => ({
 // ═══════════════════════════════════════════════
 function calcBudget(project) {
   const { team, features, risks, inputData: inp, expenses } = project;
-  const hpm = inp.hoursPerMonth ?? 168;
+  const hpm = inp.hoursPerMonth || 168;
 
   const roleGroups = {};
   ROLE_TYPES.forEach(r => { roleGroups[r] = { count:0, totalRate:0, totalExtRate:0, totalExtRateDisc:0 }; });
@@ -475,7 +475,7 @@ function calcBudget(project) {
   });
   const totalContingency = Object.values(contingency).reduce((s,v) => s+v, 0);
 
-  const prepBillable = (inp.prepWorkload ?? 1) * 40 * (inp.prepMembers ?? 8) * (inp.prepWeeks ?? 1);
+  const prepBillable = (inp.prepWorkload||1) * 40 * (inp.prepMembers||8) * (inp.prepWeeks||1);
   const prepTotal = prepBillable;
 
   const warrantyHours = (inp.warrantyMonths||0) * hpm * (inp.warrantyMembers||0) * (inp.warrantyWorkload||0);
@@ -499,7 +499,7 @@ function calcBudget(project) {
   const totalProjectHours = totalExecutionHours + prepTotal + postReleaseHours;
 
   const totalExpenses = Object.values(expenses).reduce((s,v) => s + (v||0), 0);
-  const autoExpenses = totalExpenses <= 0 ? (inp.expensesPctOfCogs ?? 0.04) * totalExecutionHours * teamHourlyRate : totalExpenses;
+  const autoExpenses = totalExpenses <= 0 ? (inp.expensesPctOfCogs||0.04) * totalExecutionHours * teamHourlyRate : totalExpenses;
 
   const cogsBillable = totalProjectHours * teamHourlyRate;
   const cogsTotal = cogsBillable + autoExpenses;
@@ -521,7 +521,7 @@ function calcBudget(project) {
   });
 
   const execWeeks = totalTeamCount > 0 ? totalExecutionHours / (totalTeamCount * 40) : 0;
-  const totalWeeks = execWeeks + (inp.prepWeeks ?? 0) + (warrantyHours > 0 ? (inp.warrantyMonths ?? 0) * 4.3 : 0);
+  const totalWeeks = execWeeks + (inp.prepWeeks||0) + (warrantyHours > 0 ? (inp.warrantyMonths||0) * 4.3 : 0);
   const totalMonths = totalWeeks / 4.3;
 
   const totalRiskEMV = risks.reduce((s,r) => s + (r.estimateHours||0) * (r.probability||0), 0);
