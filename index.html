@@ -9,59 +9,329 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script>
 tailwind.config = {
+  darkMode: 'class',
   theme: {
     extend: {
-      fontFamily: { sans: ['DM Sans', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+      fontFamily: {
+        sans: ['-apple-system','BlinkMacSystemFont','Inter','SF Pro Display','Segoe UI','sans-serif'],
+        mono: ['JetBrains Mono','SF Mono','monospace']
+      },
       colors: {
-        ink: { 50:'#f7f7f8',100:'#eeeef0',200:'#d9d9de',300:'#b5b5bf',400:'#8e8e9e',500:'#6f6f83',600:'#5a5a6b',700:'#494957',800:'#3e3e4a',900:'#272731',950:'#1a1a21' },
-        accent: { DEFAULT:'#e85d26', light:'#ff8f5c', dark:'#c24010' },
-        sea: { DEFAULT:'#2d7ff9', light:'#6ba5ff', dark:'#1a5fc0' },
-        mint: { DEFAULT:'#20c997', light:'#63e6c4', dark:'#12a87d' }
+        apple: {
+          bg: 'var(--bg)',
+          surface: 'var(--surface)',
+          elevated: 'var(--elevated)',
+          separator: 'var(--separator)',
+          label: 'var(--label)',
+          'label-secondary': 'var(--label-secondary)',
+          'label-tertiary': 'var(--label-tertiary)',
+          blue: '#007AFF',
+          green: '#34C759',
+          red: '#FF3B30',
+          orange: '#FF9500',
+          yellow: '#FFCC00',
+          purple: '#AF52DE',
+          pink: '#FF2D55',
+          teal: '#5AC8FA',
+          indigo: '#5856D6',
+        }
+      },
+      borderRadius: { 'xl': '16px', '2xl': '20px' },
+      boxShadow: {
+        'glass': '0 4px 30px rgba(0,0,0,0.06)',
+        'glass-lg': '0 8px 40px rgba(0,0,0,0.08)',
+        'glass-dark': '0 4px 30px rgba(0,0,0,0.3)',
+        'card': '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)',
+        'card-hover': '0 4px 12px rgba(0,0,0,0.08)',
       }
     }
   }
 }
 </script>
 <style>
-  * { box-sizing: border-box; }
-  body { font-family: 'DM Sans', sans-serif; background: #f7f7f8; color: #272731; }
-  .tab-active { border-bottom: 3px solid #e85d26; color: #e85d26; font-weight: 700; }
-  .tab-inactive { border-bottom: 3px solid transparent; color: #6f6f83; }
-  .tab-inactive:hover { color: #272731; border-color: #d9d9de; }
-  input[type=number]::-webkit-inner-spin-button { opacity: 1; }
-  .card { background: #fff; border: 1px solid #eeeef0; border-radius: 12px; }
-  .metric-card { background: linear-gradient(135deg, #fff 0%, #f7f7f8 100%); }
-  .phase-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .phase-1 { background: #dbeafe; color: #1d4ed8; }
-  .phase-2 { background: #fef3c7; color: #b45309; }
-  .phase-3 { background: #d1fae5; color: #047857; }
-  .phase-oos { background: #f3e8ff; color: #7c3aed; }
-  .phase-post { background: #ffe4e6; color: #be123c; }
-  .phase-prep { background: #e0e7ff; color: #4338ca; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-  .fade-in { animation: fadeIn 0.3s ease-out; }
-  .risk-high { background: #fef2f2; border-left: 4px solid #ef4444; }
-  .risk-med { background: #fffbeb; border-left: 4px solid #f59e0b; }
-  .risk-low { background: #f0fdf4; border-left: 4px solid #22c55e; }
-  .input-clean { border: 1px solid #d9d9de; border-radius: 8px; padding: 6px 10px; font-size: 14px; transition: border-color 0.15s; background: #fff; }
-  .input-clean:focus { outline: none; border-color: #e85d26; box-shadow: 0 0 0 3px rgba(232,93,38,0.1); }
-  select.input-clean { appearance: auto; }
-  .btn-primary { background: #e85d26; color: #fff; border-radius: 8px; padding: 8px 20px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; transition: all 0.15s; }
-  .btn-primary:hover { background: #c24010; transform: translateY(-1px); }
-  .btn-ghost { background: transparent; color: #6f6f83; border: 1px solid #d9d9de; border-radius: 8px; padding: 6px 14px; font-weight: 500; font-size: 13px; cursor: pointer; }
-  .btn-ghost:hover { border-color: #8e8e9e; color: #272731; }
-  .btn-danger { background: #fee2e2; color: #dc2626; border: none; border-radius: 8px; padding: 4px 10px; font-size: 12px; cursor: pointer; }
-  .btn-danger:hover { background: #fecaca; }
-  table.data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-  table.data-table th { background: #f7f7f8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #6f6f83; padding: 10px 12px; text-align: left; border-bottom: 2px solid #eeeef0; position: sticky; top: 0; z-index: 2; }
-  table.data-table td { padding: 8px 12px; border-bottom: 1px solid #eeeef0; font-size: 14px; vertical-align: middle; }
-  table.data-table tr:hover td { background: #f7f7f8; }
-  .money { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
-  .tooltip { position: relative; }
-  .tooltip:hover::after { content: attr(data-tip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #272731; color: #fff; font-size: 12px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; z-index: 50; }
+  :root {
+    --bg: #F2F2F7;
+    --surface: rgba(255,255,255,0.8);
+    --elevated: #FFFFFF;
+    --separator: rgba(60,60,67,0.12);
+    --label: #1C1C1E;
+    --label-secondary: #3C3C43;
+    --label-tertiary: #8E8E93;
+    --fill: rgba(120,120,128,0.12);
+    --fill-secondary: rgba(120,120,128,0.08);
+  }
+  .dark {
+    --bg: #000000;
+    --surface: rgba(28,28,30,0.8);
+    --elevated: #1C1C1E;
+    --separator: rgba(84,84,88,0.65);
+    --label: #FFFFFF;
+    --label-secondary: #EBEBF5;
+    --label-tertiary: #8E8E93;
+    --fill: rgba(120,120,128,0.36);
+    --fill-secondary: rgba(120,120,128,0.24);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--label);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  /* Glass morphism */
+  .glass {
+    background: var(--surface);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--separator);
+  }
+  .glass-card {
+    background: var(--elevated);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    border: 1px solid var(--separator);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .glass-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .dark .glass-card { box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .dark .glass-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+
+  /* Inputs */
+  .apple-input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--separator);
+    background: var(--elevated);
+    color: var(--label);
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .apple-input:focus {
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0,122,255,0.15);
+  }
+  .apple-input-sm {
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+  select.apple-input { appearance: auto; cursor: pointer; }
+  input[type=number]::-webkit-inner-spin-button { opacity: 0.5; }
+
+  /* Buttons */
+  .btn-apple {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  .btn-apple-blue { background: #007AFF; color: #fff; }
+  .btn-apple-blue:hover { background: #0066D6; transform: translateY(-1px); }
+  .btn-apple-blue:active { transform: scale(0.98); }
+  .btn-apple-gray {
+    background: var(--fill);
+    color: var(--label);
+  }
+  .btn-apple-gray:hover { background: var(--fill-secondary); }
+  .btn-apple-red { background: rgba(255,59,48,0.12); color: #FF3B30; }
+  .btn-apple-red:hover { background: rgba(255,59,48,0.2); }
+  .btn-apple-sm { padding: 6px 12px; font-size: 13px; border-radius: 8px; }
+  .btn-apple-xs { padding: 4px 8px; font-size: 12px; border-radius: 6px; }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes countUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-up { animation: fadeInUp 0.4s ease-out both; }
+  .animate-fade-in { animation: fadeIn 0.3s ease-out both; }
+  .animate-slide-in { animation: slideIn 0.3s ease-out both; }
+  .animate-scale-in { animation: scaleIn 0.3s ease-out both; }
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.1s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.2s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.3s; }
+
+  /* Tab content transition */
+  .tab-content {
+    animation: fadeInUp 0.35s ease-out;
+  }
+
+  /* Table */
+  .apple-table { width: 100%; border-collapse: collapse; }
+  .apple-table th {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--label-tertiary);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--separator);
+    position: sticky;
+    top: 0;
+    background: var(--elevated);
+    z-index: 2;
+  }
+  .apple-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--separator);
+    font-size: 14px;
+    vertical-align: middle;
+    transition: background 0.15s;
+  }
+  .apple-table tr:hover td { background: var(--fill-secondary); }
+  .apple-table tr:last-child td { border-bottom: none; }
+
+  /* Metric card */
+  .metric-card {
+    background: var(--elevated);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--separator);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.4s ease-out both;
+  }
+  .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  }
+  .dark .metric-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+
+  /* Phase badges */
+  .phase-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .phase-1-badge { background: rgba(0,122,255,0.12); color: #007AFF; }
+  .phase-2-badge { background: rgba(255,149,0,0.12); color: #FF9500; }
+  .phase-3-badge { background: rgba(52,199,89,0.12); color: #34C759; }
+  .phase-oos-badge { background: rgba(175,82,222,0.12); color: #AF52DE; }
+  .phase-post-badge { background: rgba(255,45,85,0.12); color: #FF2D55; }
+  .phase-prep-badge { background: rgba(88,86,214,0.12); color: #5856D6; }
+  .dark .phase-1-badge { background: rgba(0,122,255,0.25); }
+  .dark .phase-2-badge { background: rgba(255,149,0,0.25); }
+  .dark .phase-3-badge { background: rgba(52,199,89,0.25); }
+  .dark .phase-oos-badge { background: rgba(175,82,222,0.25); }
+
+  /* Risk severity */
+  .risk-critical { border-left: 4px solid #FF3B30; background: rgba(255,59,48,0.04); }
+  .risk-high { border-left: 4px solid #FF9500; background: rgba(255,149,0,0.04); }
+  .risk-medium { border-left: 4px solid #FFCC00; background: rgba(255,204,0,0.04); }
+  .risk-low { border-left: 4px solid #34C759; background: rgba(52,199,89,0.04); }
+  .dark .risk-critical { background: rgba(255,59,48,0.1); }
+  .dark .risk-high { background: rgba(255,149,0,0.1); }
+  .dark .risk-medium { background: rgba(255,204,0,0.1); }
+  .dark .risk-low { background: rgba(52,199,89,0.1); }
+
+  /* Probability bar */
+  .prob-bar-bg {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--fill);
+    overflow: hidden;
+  }
+  .prob-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  /* Toggle switch */
+  .toggle-track {
+    width: 44px; height: 26px;
+    border-radius: 13px;
+    background: var(--fill);
+    cursor: pointer;
+    transition: background 0.3s;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toggle-track.active { background: #34C759; }
+  .toggle-thumb {
+    width: 22px; height: 22px;
+    border-radius: 11px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    position: absolute;
+    top: 2px; left: 2px;
+    transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+  }
+  .toggle-track.active .toggle-thumb { transform: translateX(18px); }
+
+  /* Slider */
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--fill);
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #007AFF;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+
+  /* Donut chart */
+  .donut-label {
+    font-size: 24px;
+    font-weight: 700;
+    fill: var(--label);
+  }
+  .donut-sublabel {
+    font-size: 11px;
+    font-weight: 500;
+    fill: var(--label-tertiary);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
+  .dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+
+  .money { font-family: 'JetBrains Mono', 'SF Mono', monospace; font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
@@ -73,7 +343,7 @@ const { useState, useEffect, useMemo, useCallback, useRef } = React;
 // DATA MODELS & DEFAULTS
 // ═══════════════════════════════════════════════
 const PHASES = ['Phase 1','Phase 2','Phase 3','Post Release','Preparation','Out of Scope'];
-const PHASE_CLASSES = {'Phase 1':'phase-1','Phase 2':'phase-2','Phase 3':'phase-3','Out of Scope':'phase-oos','Post Release':'phase-post','Preparation':'phase-prep'};
+const PHASE_BADGE = {'Phase 1':'phase-1-badge','Phase 2':'phase-2-badge','Phase 3':'phase-3-badge','Out of Scope':'phase-oos-badge','Post Release':'phase-post-badge','Preparation':'phase-prep-badge'};
 const ROLE_TYPES = ['DEV','QA','PM','Arch (mngt)','Tech Lead (mngt)','DevOps','BA','UI/UX','InfoDev'];
 
 const defaultTeamMember = (role='DEV', position='') => ({
@@ -132,7 +402,6 @@ function calcBudget(project) {
   const { team, features, risks, inputData: inp, expenses } = project;
   const hpm = inp.hoursPerMonth || 168;
 
-  // --- Team Rates ---
   const roleGroups = {};
   ROLE_TYPES.forEach(r => { roleGroups[r] = { count:0, totalRate:0, totalExtRate:0, totalExtRateDisc:0 }; });
   team.forEach(m => {
@@ -156,11 +425,9 @@ function calcBudget(project) {
   });
   const devCount = roleGroups['DEV'].count || 1;
 
-  // Role allocation percentages (how many people of each role vs DEV count)
   const rolePct = {};
   ROLE_TYPES.forEach(r => { rolePct[r] = roleGroups[r].count / (devCount || 1); });
 
-  // --- PERT Feature Estimation ---
   const featureCalcs = features.map(f => {
     const o = f.optimistic || 0, p = f.pessimistic || 0, m = f.mostLikely || 0;
     const expected = (o + p + 4*m) / 6;
@@ -171,15 +438,12 @@ function calcBudget(project) {
     return { ...f, expected, stdDev, variance, devHours, riskFlag };
   });
 
-  // --- Phase-based Dev Hours ---
   const phaseDevHours = {};
   PHASES.forEach(ph => { phaseDevHours[ph] = 0; });
   featureCalcs.forEach(f => { phaseDevHours[f.phase] = (phaseDevHours[f.phase]||0) + f.devHours; });
   const totalDevHoursExec = (phaseDevHours['Phase 1']||0) + (phaseDevHours['Phase 2']||0) + (phaseDevHours['Phase 3']||0);
   const totalDevHoursAll = totalDevHoursExec + (phaseDevHours['Out of Scope']||0);
 
-  // --- Effort Distribution per Role (mirroring Excel) ---
-  // For each phase, distribute hours to all roles based on rolePct
   const phaseEfforts = {};
   PHASES.forEach(ph => {
     const devH = phaseDevHours[ph] || 0;
@@ -191,7 +455,6 @@ function calcBudget(project) {
     });
   });
 
-  // --- Stabilization (% of execution efforts) ---
   const stabilization = {};
   ['Phase 1','Phase 2','Phase 3','Out of Scope'].forEach(ph => {
     const allEfforts = Object.values(phaseEfforts[ph] || {}).reduce((s,v) => s+v, 0);
@@ -199,7 +462,6 @@ function calcBudget(project) {
   });
   const totalStabilization = Object.values(stabilization).reduce((s,v) => s+v, 0);
 
-  // --- Contingency Reserve ---
   const riskEMVbyPhase = {};
   PHASES.forEach(ph => { riskEMVbyPhase[ph] = 0; });
   risks.forEach(r => {
@@ -213,15 +475,12 @@ function calcBudget(project) {
   });
   const totalContingency = Object.values(contingency).reduce((s,v) => s+v, 0);
 
-  // --- Preparation Hours ---
   const prepBillable = (inp.prepWorkload||1) * 40 * (inp.prepMembers||8) * (inp.prepWeeks||1);
-  const prepTotal = prepBillable; // simplified — non-billable added via overhead
+  const prepTotal = prepBillable;
 
-  // --- Post-Release ---
   const warrantyHours = (inp.warrantyMonths||0) * hpm * (inp.warrantyMembers||0) * (inp.warrantyWorkload||0);
   const teamReleaseHours = (inp.teamReleaseHoursPerPerson||0) * totalTeamCount;
 
-  // UAT hours per phase
   const uatHoursPerPhase = {};
   ['Phase 1','Phase 2','Phase 3','Out of Scope'].forEach(ph => {
     const devH = phaseDevHours[ph];
@@ -234,29 +493,22 @@ function calcBudget(project) {
 
   const knowledgeTransferHours = inp.knowledgeTransferHours || 0;
   const postReleaseHours = warrantyHours + teamReleaseHours + knowledgeTransferHours + totalUATHours;
+  const infoDevHours = 0;
 
-  // --- Documentation (InfoDev) ---
-  const infoDevHours = 0; // User fills in manually, currently 0
-
-  // --- Total Hours Summary ---
   const totalExecutionHours = totalDevHoursExec + totalStabilization + totalContingency;
   const totalProjectHours = totalExecutionHours + prepTotal + postReleaseHours;
 
-  // --- Cost Calculations ---
   const totalExpenses = Object.values(expenses).reduce((s,v) => s + (v||0), 0);
   const autoExpenses = totalExpenses <= 0 ? (inp.expensesPctOfCogs||0.04) * totalExecutionHours * teamHourlyRate : totalExpenses;
 
   const cogsBillable = totalProjectHours * teamHourlyRate;
   const cogsTotal = cogsBillable + autoExpenses;
 
-  // Revenue calculations
   const revenueDPM = inp.dpmTarget > 0 ? cogsTotal / (1 - inp.dpmTarget) : cogsTotal;
   const revenueExtRate = totalProjectHours * avgExtRate;
   const revenueExtRateDisc = totalProjectHours * avgExtRateDisc;
-
   const dpmActual = revenueExtRate > 0 ? (revenueExtRate - cogsTotal) / revenueExtRate : 0;
 
-  // --- Phase Breakdown for Dashboard ---
   const phaseBreakdown = {};
   ['Phase 1','Phase 2','Phase 3'].forEach(ph => {
     const devH = phaseDevHours[ph] || 0;
@@ -268,12 +520,10 @@ function calcBudget(project) {
     phaseBreakdown[ph] = { devHours: devH, stabHours: stabH, contHours: contH, totalHours: totalH, cost, revenue: rev };
   });
 
-  // Project duration
   const execWeeks = totalTeamCount > 0 ? totalExecutionHours / (totalTeamCount * 40) : 0;
   const totalWeeks = execWeeks + (inp.prepWeeks||0) + (warrantyHours > 0 ? (inp.warrantyMonths||0) * 4.3 : 0);
   const totalMonths = totalWeeks / 4.3;
 
-  // Risk summary
   const totalRiskEMV = risks.reduce((s,r) => s + (r.estimateHours||0) * (r.probability||0), 0);
   const totalRiskCost = totalRiskEMV * teamHourlyRate;
 
@@ -292,98 +542,420 @@ function calcBudget(project) {
 }
 
 // ═══════════════════════════════════════════════
-// UTILITY COMPONENTS
+// FORMATTERS
 // ═══════════════════════════════════════════════
 const fmt = (n, dec=0) => {
-  if (n === undefined || n === null || isNaN(n)) return '—';
+  if (n === undefined || n === null || isNaN(n)) return '\u2014';
   return new Intl.NumberFormat('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(n);
 };
-const fmtMoney = (n) => n === undefined || isNaN(n) ? '—' : '$' + fmt(n, 0);
-const fmtPct = (n) => n === undefined || isNaN(n) ? '—' : (n*100).toFixed(1) + '%';
+const fmtMoney = (n) => n === undefined || isNaN(n) ? '\u2014' : '$' + fmt(n, 0);
+const fmtPct = (n) => n === undefined || isNaN(n) ? '\u2014' : (n*100).toFixed(1) + '%';
 const fmtHrs = (n) => fmt(n, 1) + 'h';
 
+// ═══════════════════════════════════════════════
+// UTILITY COMPONENTS
+// ═══════════════════════════════════════════════
 function NumInput({ value, onChange, min=0, step=1, className='', ...props }) {
   return <input type="number" value={value} onChange={e => onChange(parseFloat(e.target.value)||0)}
-    min={min} step={step} className={`input-clean w-24 text-right ${className}`} {...props}/>;
+    min={min} step={step} className={`apple-input apple-input-sm text-right ${className}`} {...props}/>;
 }
 function PctInput({ value, onChange, className='', ...props }) {
   return <input type="number" value={(value*100).toFixed(1)} onChange={e => onChange((parseFloat(e.target.value)||0)/100)}
-    min={0} max={100} step={0.5} className={`input-clean w-20 text-right ${className}`} {...props}/>;
+    min={0} max={100} step={0.5} className={`apple-input apple-input-sm text-right ${className}`} {...props}/>;
 }
 function TextInput({ value, onChange, className='', ...props }) {
   return <input type="text" value={value} onChange={e => onChange(e.target.value)}
-    className={`input-clean ${className}`} {...props}/>;
+    className={`apple-input apple-input-sm ${className}`} {...props}/>;
 }
 function SelectInput({ value, onChange, options, className='', ...props }) {
-  return <select value={value} onChange={e => onChange(e.target.value)} className={`input-clean ${className}`} {...props}>
+  return <select value={value} onChange={e => onChange(e.target.value)} className={`apple-input apple-input-sm ${className}`} {...props}>
     {options.map(o => <option key={o} value={o}>{o}</option>)}
   </select>;
 }
 
-function MetricCard({ label, value, sub, color='ink' }) {
-  const colors = { ink:'border-ink-200', accent:'border-accent', sea:'border-sea', mint:'border-mint' };
+// SVG Donut Chart
+function DonutChart({ data, size=160, thickness=24, centerLabel, centerSub }) {
+  const total = data.reduce((s, d) => s + d.value, 0);
+  const radius = (size - thickness) / 2;
+  const circumference = 2 * Math.PI * radius;
+  let offset = 0;
+
   return (
-    <div className={`metric-card card p-4 border-l-4 ${colors[color]||colors.ink}`}>
-      <div className="text-xs font-semibold text-ink-400 uppercase tracking-wider mb-1">{label}</div>
-      <div className="text-2xl font-bold money">{value}</div>
-      {sub && <div className="text-xs text-ink-400 mt-1">{sub}</div>}
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="var(--fill)" strokeWidth={thickness}/>
+      {data.filter(d => d.value > 0).map((d, i) => {
+        const pct = total > 0 ? d.value / total : 0;
+        const dashLen = circumference * pct;
+        const dashOffset = circumference * 0.25 - offset;
+        offset += dashLen;
+        return <circle key={i} cx={size/2} cy={size/2} r={radius} fill="none"
+          stroke={d.color} strokeWidth={thickness}
+          strokeDasharray={`${dashLen} ${circumference - dashLen}`}
+          strokeDashoffset={dashOffset}
+          style={{transition: 'stroke-dasharray 0.6s ease, stroke-dashoffset 0.6s ease'}}/>;
+      })}
+      {centerLabel && <text x={size/2} y={size/2 - 4} textAnchor="middle" className="donut-label">{centerLabel}</text>}
+      {centerSub && <text x={size/2} y={size/2 + 14} textAnchor="middle" className="donut-sublabel">{centerSub}</text>}
+    </svg>
+  );
+}
+
+// Metric Card
+function MetricCard({ label, value, sub, color='#007AFF', delay=0 }) {
+  return (
+    <div className="metric-card" style={{animationDelay: `${delay}s`}}>
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-2 h-2 rounded-full" style={{background: color}}/>
+        <span style={{fontSize:12, fontWeight:600, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.5px'}}>{label}</span>
+      </div>
+      <div className="money" style={{fontSize:28, fontWeight:700, lineHeight:1.1}}>{value}</div>
+      {sub && <div style={{fontSize:13, color:'var(--label-tertiary)', marginTop:6}}>{sub}</div>}
+    </div>
+  );
+}
+
+// Section wrapper for settings
+function SettingsSection({ title, children }) {
+  return (
+    <div className="glass-card p-6 mb-4 animate-fade-in-up">
+      <h3 style={{fontSize:13, fontWeight:700, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.8px', marginBottom:16, paddingBottom:12, borderBottom:'1px solid var(--separator)'}}>{title}</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">{children}</div>
+    </div>
+  );
+}
+
+function SettingsField({ label, tip, children }) {
+  return (
+    <div>
+      <label style={{fontSize:13, fontWeight:600, color:'var(--label-secondary)', display:'block', marginBottom:6}}>{label}</label>
+      {children}
+      {tip && <div style={{fontSize:12, color:'var(--label-tertiary)', marginTop:4}}>{tip}</div>}
+    </div>
+  );
+}
+
+// Toggle
+function Toggle({ value, onChange, label }) {
+  return (
+    <div className="flex items-center justify-between">
+      {label && <span style={{fontSize:15, color:'var(--label)'}}>{label}</span>}
+      <div className={`toggle-track ${value ? 'active' : ''}`} onClick={() => onChange(!value)}>
+        <div className="toggle-thumb"/>
+      </div>
     </div>
   );
 }
 
 // ═══════════════════════════════════════════════
-// TAB: PROJECT TEAM
+// EXPORT UTILITIES (#14)
 // ═══════════════════════════════════════════════
-function TeamTab({ project, setProject }) {
-  const { team } = project;
-  const addMember = () => setProject(p => ({...p, team: [...p.team, defaultTeamMember()]}));
-  const updateMember = (id, field, val) => setProject(p => ({
-    ...p, team: p.team.map(m => m.id === id ? {...m, [field]: val} : m)
+function exportJSON(project) {
+  const data = JSON.stringify(project, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${project.name.replace(/\s+/g, '_')}-budget-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportCSV(project, budget) {
+  const b = budget;
+  const rows = [
+    ['Project Budget Summary', project.name],
+    ['Generated', new Date().toLocaleString()],
+    [''],
+    ['HOURS BREAKDOWN'],
+    ['Category', 'Hours'],
+    ['Development (Execution)', b.totalDevHoursExec.toFixed(1)],
+    ['  Phase 1', (b.phaseDevHours['Phase 1']||0).toFixed(1)],
+    ['  Phase 2', (b.phaseDevHours['Phase 2']||0).toFixed(1)],
+    ['  Phase 3', (b.phaseDevHours['Phase 3']||0).toFixed(1)],
+    ['Stabilization', b.totalStabilization.toFixed(1)],
+    ['Contingency Reserve', b.totalContingency.toFixed(1)],
+    ['Preparation', b.prepTotal.toFixed(1)],
+    ['Post-Release', b.postReleaseHours.toFixed(1)],
+    ['TOTAL PROJECT', b.totalProjectHours.toFixed(1)],
+    [''],
+    ['FINANCIAL SUMMARY'],
+    ['Metric', 'DPM-based', 'Ext Rate', 'Ext Rate (Disc)'],
+    ['Revenue', b.revenueDPM.toFixed(0), b.revenueExtRate.toFixed(0), b.revenueExtRateDisc.toFixed(0)],
+    ['COGS', b.cogsTotal.toFixed(0), '', ''],
+    ['Gross Profit', (b.revenueDPM - b.cogsTotal).toFixed(0), (b.revenueExtRate - b.cogsTotal).toFixed(0), (b.revenueExtRateDisc - b.cogsTotal).toFixed(0)],
+    ['DPM %', b.revenueDPM > 0 ? ((b.revenueDPM - b.cogsTotal)/b.revenueDPM*100).toFixed(1)+'%' : '-', (b.dpmActual*100).toFixed(1)+'%', b.revenueExtRateDisc > 0 ? ((b.revenueExtRateDisc - b.cogsTotal)/b.revenueExtRateDisc*100).toFixed(1)+'%' : '-'],
+    [''],
+    ['TIMELINE'],
+    ['Prep weeks', project.inputData.prepWeeks],
+    ['Execution weeks', b.execWeeks.toFixed(1)],
+    ['Total weeks', b.totalWeeks.toFixed(1)],
+    ['Total months', b.totalMonths.toFixed(1)],
+    [''],
+    ['TEAM COMPOSITION'],
+    ['Role', 'Count', 'Avg Rate (Int)', 'Avg Rate (Ext)'],
+    ...ROLE_TYPES.filter(r => b.roleGroups[r].count > 0).map(r => [
+      r, b.roleGroups[r].count, b.roleAvgRate[r].toFixed(2), (b.roleGroups[r].count > 0 ? b.roleGroups[r].totalExtRate / b.roleGroups[r].count : 0).toFixed(2)
+    ]),
+    [''],
+    ['FEATURES'],
+    ['#', 'Group', 'Name', 'Phase', 'Optimistic', 'Pessimistic', 'Most Likely', 'Expected', 'Std Dev', 'Dev Hours', 'Risk'],
+    ...b.featureCalcs.map((f, i) => [
+      i+1, f.group, f.name, f.phase, f.optimistic, f.pessimistic, f.mostLikely, f.expected.toFixed(2), f.stdDev.toFixed(2), f.devHours.toFixed(1), f.riskFlag ? 'YES' : ''
+    ]),
+    [''],
+    ['RISKS'],
+    ['Category', 'Phase', 'Risk', 'Estimate (hrs)', 'Probability', 'EMV (hrs)'],
+    ...project.risks.map(r => [
+      r.group, r.phase, r.risk, r.estimateHours, (r.probability*100).toFixed(1)+'%', ((r.estimateHours||0)*(r.probability||0)).toFixed(1)
+    ]),
+  ];
+  const csv = rows.map(r => r.map(c => typeof c === 'string' && c.includes(',') ? `"${c}"` : c).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${project.name.replace(/\s+/g, '_')}-budget-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ═══════════════════════════════════════════════
+// TAB: DASHBOARD (#8)
+// ═══════════════════════════════════════════════
+function DashboardTab({ project, budget }) {
+  const b = budget;
+
+  const phaseData = ['Phase 1','Phase 2','Phase 3'].map(ph => ({
+    name: ph, short: ph.replace('Phase ','P'),
+    devHours: b.phaseDevHours[ph]||0,
+    stabHours: b.stabilization[ph]||0,
+    contHours: b.contingency[ph]||0,
+    total: (b.phaseBreakdown[ph]||{}).totalHours||0,
+    cost: (b.phaseBreakdown[ph]||{}).cost||0,
+    revenue: (b.phaseBreakdown[ph]||{}).revenue||0,
   }));
-  const removeMember = (id) => setProject(p => ({...p, team: p.team.filter(m => m.id !== id)}));
+
+  const hoursDonutData = [
+    { label: 'Development', value: b.totalDevHoursExec, color: '#007AFF' },
+    { label: 'Stabilization', value: b.totalStabilization, color: '#FF9500' },
+    { label: 'Contingency', value: b.totalContingency, color: '#FF3B30' },
+    { label: 'Preparation', value: b.prepTotal, color: '#5856D6' },
+    { label: 'Post-Release', value: b.postReleaseHours, color: '#AF52DE' },
+  ];
+
+  const phaseDonutData = [
+    { label: 'Phase 1', value: b.phaseDevHours['Phase 1']||0, color: '#007AFF' },
+    { label: 'Phase 2', value: b.phaseDevHours['Phase 2']||0, color: '#FF9500' },
+    { label: 'Phase 3', value: b.phaseDevHours['Phase 3']||0, color: '#34C759' },
+    { label: 'Out of Scope', value: b.phaseDevHours['Out of Scope']||0, color: '#AF52DE' },
+  ];
 
   return (
-    <div className="fade-in">
-      <div className="flex items-center justify-between mb-4">
+    <div className="tab-content">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-bold">Project Team</h2>
-          <p className="text-sm text-ink-400">Define roles, headcount and rates for the project team</p>
+          <h2 style={{fontSize:22, fontWeight:700}}>Budget Summary</h2>
+          <p style={{fontSize:14, color:'var(--label-tertiary)', marginTop:2}}>Auto-calculated from team, features, risks and settings</p>
         </div>
-        <button onClick={addMember} className="btn-primary">+ Add Member</button>
+        <div className="flex gap-2">
+          <button onClick={() => exportJSON(project)} className="btn-apple btn-apple-gray btn-apple-sm">
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            JSON
+          </button>
+          <button onClick={() => exportCSV(project, b)} className="btn-apple btn-apple-gray btn-apple-sm">
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            CSV
+          </button>
+        </div>
       </div>
-      <div className="card overflow-x-auto">
-        <table className="data-table">
-          <thead><tr>
-            <th>Role</th><th>Position</th><th className="text-center">Count</th>
-            <th className="text-right">Monthly Rate (Int)</th>
-            <th className="text-right">Hourly Rate (Ext)</th>
-            <th className="text-right">Hourly Disc. (Ext)</th>
-            <th></th>
-          </tr></thead>
-          <tbody>
-            {team.map(m => (
-              <tr key={m.id}>
-                <td><SelectInput value={m.role} onChange={v => updateMember(m.id,'role',v)} options={ROLE_TYPES} className="w-36"/></td>
-                <td><TextInput value={m.position} onChange={v => updateMember(m.id,'position',v)} placeholder="e.g. Senior Backend Dev" className="w-48"/></td>
-                <td className="text-center"><NumInput value={m.count} onChange={v => updateMember(m.id,'count',v)} min={1} className="w-16 text-center"/></td>
-                <td className="text-right"><NumInput value={m.monthlyInternal} onChange={v => updateMember(m.id,'monthlyInternal',v)} step={100} className="w-28"/></td>
-                <td className="text-right"><NumInput value={m.externalRate} onChange={v => updateMember(m.id,'externalRate',v)} step={5} className="w-24"/></td>
-                <td className="text-right"><NumInput value={m.externalRateDiscount} onChange={v => updateMember(m.id,'externalRateDiscount',v)} step={5} className="w-24"/></td>
-                <td><button onClick={() => removeMember(m.id)} className="btn-danger">✕</button></td>
-              </tr>
+
+      {/* Key Metrics */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <MetricCard label="Total Hours" value={fmtHrs(b.totalProjectHours)} sub={`${fmt(b.totalMonths,1)} months`} color="#007AFF" delay={0}/>
+        <MetricCard label="COGS (Total)" value={fmtMoney(b.cogsTotal)} sub={`Billable: ${fmtMoney(b.cogsBillable)}`} color="#5856D6" delay={0.05}/>
+        <MetricCard label="Revenue (Ext Rate)" value={fmtMoney(b.revenueExtRate)} sub={`Rate: ${fmtMoney(b.avgExtRate)}/hr`} color="#34C759" delay={0.1}/>
+        <MetricCard label="DPM" value={fmtPct(b.dpmActual)} sub={`Margin: ${fmtMoney(b.revenueExtRate - b.cogsTotal)}`} color="#FF9500" delay={0.15}/>
+      </div>
+
+      {/* Charts + Hours Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+        {/* Hours Donut */}
+        <div className="glass-card p-6 flex flex-col items-center animate-fade-in-up stagger-2">
+          <h3 style={{fontSize:13, fontWeight:700, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.8px', marginBottom:16, alignSelf:'flex-start'}}>Hours Distribution</h3>
+          <DonutChart data={hoursDonutData} size={180} thickness={28} centerLabel={fmt(b.totalProjectHours,0)} centerSub="total hrs"/>
+          <div className="mt-4 space-y-2 w-full">
+            {hoursDonutData.map(d => (
+              <div key={d.label} className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-sm" style={{background: d.color}}/>
+                  <span style={{color:'var(--label-secondary)'}}>{d.label}</span>
+                </div>
+                <span className="money" style={{fontWeight:600}}>{fmtHrs(d.value)}</span>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
+
+        {/* Phase Donut */}
+        <div className="glass-card p-6 flex flex-col items-center animate-fade-in-up stagger-3">
+          <h3 style={{fontSize:13, fontWeight:700, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.8px', marginBottom:16, alignSelf:'flex-start'}}>Phase Breakdown</h3>
+          <DonutChart data={phaseDonutData} size={180} thickness={28} centerLabel={fmt(b.totalDevHoursAll,0)} centerSub="dev hrs"/>
+          <div className="mt-4 space-y-2 w-full">
+            {phaseDonutData.filter(d => d.value > 0).map(d => (
+              <div key={d.label} className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-sm" style={{background: d.color}}/>
+                  <span style={{color:'var(--label-secondary)'}}>{d.label}</span>
+                </div>
+                <span className="money" style={{fontWeight:600}}>{fmtHrs(d.value)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Hours Table */}
+        <div className="glass-card p-6 animate-fade-in-up stagger-4">
+          <h3 style={{fontSize:13, fontWeight:700, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.8px', marginBottom:16}}>Hours Detail</h3>
+          <table className="w-full text-sm">
+            <tbody>
+              {[
+                ['Development (Exec)', fmtHrs(b.totalDevHoursExec), true, '#007AFF'],
+                ['  Phase 1', fmtHrs(b.phaseDevHours['Phase 1']||0), false],
+                ['  Phase 2', fmtHrs(b.phaseDevHours['Phase 2']||0), false],
+                ['  Phase 3', fmtHrs(b.phaseDevHours['Phase 3']||0), false],
+                ['Stabilization', fmtHrs(b.totalStabilization), true, '#FF9500'],
+                ['Contingency', fmtHrs(b.totalContingency), true, '#FF3B30'],
+                ['Preparation', fmtHrs(b.prepTotal), true, '#5856D6'],
+                ['Post-Release', fmtHrs(b.postReleaseHours), true, '#AF52DE'],
+              ].map(([label, val, bold, dotColor], i) => (
+                <tr key={i}>
+                  <td className="py-1.5" style={{color: bold ? 'var(--label)' : 'var(--label-tertiary)', fontWeight: bold ? 600 : 400}}>
+                    <div className="flex items-center gap-2">
+                      {dotColor && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{background: dotColor}}/>}
+                      {!dotColor && <div className="w-1.5"/>}
+                      {label}
+                    </div>
+                  </td>
+                  <td className="py-1.5 text-right money" style={{fontWeight: bold ? 600 : 400}}>{val}</td>
+                </tr>
+              ))}
+              <tr style={{borderTop:'2px solid var(--label)'}}>
+                <td className="pt-3" style={{fontWeight:800, fontSize:15}}>TOTAL PROJECT</td>
+                <td className="pt-3 text-right money" style={{fontWeight:800, fontSize:15}}>{fmtHrs(b.totalProjectHours)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div className="mt-3 text-xs text-ink-400">
-        Tip: Monthly Internal rate is used for COGS. External hourly rate is the billable rate to client. Leave discount rate at 0 to auto-calculate from discount %.
+
+      {/* Phase Bars */}
+      <div className="glass-card p-6 mb-4 animate-fade-in-up stagger-4">
+        <h3 style={{fontSize:13, fontWeight:700, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.8px', marginBottom:16}}>Phase Composition</h3>
+        <div className="space-y-4">
+          {phaseData.map(p => {
+            const maxH = Math.max(...phaseData.map(x => x.total), 1);
+            return (
+              <div key={p.name}>
+                <div className="flex justify-between items-center mb-2">
+                  <span className={`phase-badge ${PHASE_BADGE[p.name]}`}>{p.name}</span>
+                  <span className="money text-sm" style={{fontWeight:600}}>{fmtHrs(p.total)}</span>
+                </div>
+                <div style={{height:10, borderRadius:5, background:'var(--fill)', overflow:'hidden', display:'flex'}}>
+                  <div style={{height:'100%', background:'#007AFF', width:`${(p.devHours/maxH)*100}%`, transition:'width 0.5s ease'}}/>
+                  <div style={{height:'100%', background:'#FF9500', width:`${(p.stabHours/maxH)*100}%`, transition:'width 0.5s ease'}}/>
+                  <div style={{height:'100%', background:'#FF3B30', width:`${(p.contHours/maxH)*100}%`, transition:'width 0.5s ease'}}/>
+                </div>
+              </div>
+            );
+          })}
+          <div className="flex gap-5 mt-1">
+            {[['Dev','#007AFF'],['Stabilization','#FF9500'],['Contingency','#FF3B30']].map(([l,c]) => (
+              <span key={l} className="flex items-center gap-1.5 text-xs" style={{color:'var(--label-tertiary)'}}>
+                <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{background:c}}/> {l}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Financial Summary */}
+      <div className="glass-card p-6 mb-4 animate-fade-in-up stagger-5">
+        <h3 style={{fontSize:13, fontWeight:700, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.8px', marginBottom:16}}>Financial Summary</h3>
+        <div className="overflow-x-auto">
+          <table className="apple-table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th className="text-right">DPM-based</th>
+                <th className="text-right">Ext Rate</th>
+                <th className="text-right">Ext Rate (Disc)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style={{fontWeight:500}}>Revenue</td><td className="text-right money">{fmtMoney(b.revenueDPM)}</td><td className="text-right money">{fmtMoney(b.revenueExtRate)}</td><td className="text-right money">{fmtMoney(b.revenueExtRateDisc)}</td></tr>
+              <tr><td style={{fontWeight:500}}>COGS</td><td className="text-right money" colSpan={3}>{fmtMoney(b.cogsTotal)}</td></tr>
+              <tr><td style={{color:'var(--label-tertiary)', paddingLeft:24}}>of which expenses</td><td className="text-right money" style={{color:'var(--label-tertiary)'}} colSpan={3}>{fmtMoney(b.autoExpenses)}</td></tr>
+              <tr style={{borderTop:'2px solid var(--separator)'}}>
+                <td style={{fontWeight:700}}>Gross Profit</td>
+                <td className="text-right money" style={{fontWeight:700, color:'#34C759'}}>{fmtMoney(b.revenueDPM - b.cogsTotal)}</td>
+                <td className="text-right money" style={{fontWeight:700, color:'#34C759'}}>{fmtMoney(b.revenueExtRate - b.cogsTotal)}</td>
+                <td className="text-right money" style={{fontWeight:700, color:'#34C759'}}>{fmtMoney(b.revenueExtRateDisc - b.cogsTotal)}</td>
+              </tr>
+              <tr>
+                <td style={{fontWeight:500}}>DPM %</td>
+                <td className="text-right money">{b.revenueDPM > 0 ? fmtPct((b.revenueDPM - b.cogsTotal)/b.revenueDPM) : '\u2014'}</td>
+                <td className="text-right money">{fmtPct(b.dpmActual)}</td>
+                <td className="text-right money">{b.revenueExtRateDisc > 0 ? fmtPct((b.revenueExtRateDisc - b.cogsTotal)/b.revenueExtRateDisc) : '\u2014'}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Team + Timeline */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="glass-card p-6 animate-fade-in-up stagger-5">
+          <h3 style={{fontSize:13, fontWeight:700, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.8px', marginBottom:16}}>Team Composition</h3>
+          <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
+            {ROLE_TYPES.filter(r => b.roleGroups[r].count > 0).map(r => (
+              <div key={r} className="text-center p-3 rounded-xl" style={{background:'var(--fill-secondary)'}}>
+                <div style={{fontSize:24, fontWeight:800}}>{b.roleGroups[r].count}</div>
+                <div style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', marginTop:2}}>{r}</div>
+                <div className="money" style={{fontSize:11, color:'var(--label-tertiary)'}}>{fmtMoney(b.roleAvgRate[r])}/hr</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 flex flex-wrap gap-4 text-sm" style={{color:'var(--label-secondary)'}}>
+            <span>Headcount: <strong>{b.totalTeamCount}</strong></span>
+            <span>Int rate: <strong className="money">{fmtMoney(b.teamHourlyRate)}/hr</strong></span>
+            <span>Ext rate: <strong className="money">{fmtMoney(b.avgExtRate)}/hr</strong></span>
+          </div>
+        </div>
+
+        <div className="glass-card p-6 animate-fade-in-up stagger-6">
+          <h3 style={{fontSize:13, fontWeight:700, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.8px', marginBottom:16}}>Timeline</h3>
+          <div className="grid grid-cols-4 gap-4 text-center">
+            {[
+              [fmt(project.inputData.prepWeeks, 0), 'Prep weeks', '#5856D6'],
+              [fmt(b.execWeeks, 1), 'Exec weeks', '#007AFF'],
+              [fmt(b.totalWeeks, 1), 'Total weeks', '#FF9500'],
+              [fmt(b.totalMonths, 1), 'Total months', '#34C759'],
+            ].map(([val, label, color]) => (
+              <div key={label}>
+                <div style={{fontSize:28, fontWeight:800, color}}>{val}</div>
+                <div style={{fontSize:12, color:'var(--label-tertiary)', marginTop:4}}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 // ═══════════════════════════════════════════════
-// TAB: FEATURES ESTIMATE (PERT)
+// TAB: FEATURES (#9)
 // ═══════════════════════════════════════════════
 function FeaturesTab({ project, setProject, budget }) {
   const { features } = project;
@@ -393,82 +965,91 @@ function FeaturesTab({ project, setProject, budget }) {
   }));
   const removeFeature = (id) => setProject(p => ({...p, features: p.features.filter(f => f.id !== id)}));
   const duplicateFeature = (feat) => setProject(p => ({...p, features: [...p.features, {...feat, id: crypto.randomUUID(), name: feat.name + ' (copy)'}]}));
-
   const fc = budget.featureCalcs;
 
   return (
-    <div className="fade-in">
-      <div className="flex items-center justify-between mb-4">
+    <div className="tab-content">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-bold">Features Estimate</h2>
-          <p className="text-sm text-ink-400">PERT 3-point estimation: Optimistic / Pessimistic / Most Likely (in man-days)</p>
+          <h2 style={{fontSize:22, fontWeight:700}}>Features Estimate</h2>
+          <p style={{fontSize:14, color:'var(--label-tertiary)', marginTop:2}}>PERT 3-point estimation: Optimistic / Pessimistic / Most Likely (man-days)</p>
         </div>
-        <button onClick={addFeature} className="btn-primary">+ Add Feature</button>
+        <button onClick={addFeature} className="btn-apple btn-apple-blue btn-apple-sm">
+          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Add Feature
+        </button>
       </div>
 
-      <div className="grid grid-cols-4 gap-3 mb-4">
-        <MetricCard label="Total Dev Hours" value={fmtHrs(budget.totalDevHoursAll)} color="sea"/>
-        <MetricCard label="Features Count" value={features.length} color="ink"/>
-        <MetricCard label="Avg Std Deviation" value={fmt(fc.reduce((s,f) => s+f.stdDev,0)/Math.max(fc.length,1), 2) + ' days'} color="accent"/>
-        <MetricCard label="Risk Flags" value={fc.filter(f => f.riskFlag).length} sub="High variance features" color="accent"/>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <MetricCard label="Total Dev Hours" value={fmtHrs(budget.totalDevHoursAll)} color="#007AFF" delay={0}/>
+        <MetricCard label="Features Count" value={features.length} color="#5856D6" delay={0.05}/>
+        <MetricCard label="Avg Std Deviation" value={fmt(fc.reduce((s,f) => s+f.stdDev,0)/Math.max(fc.length,1), 2) + ' days'} color="#FF9500" delay={0.1}/>
+        <MetricCard label="Risk Flags" value={fc.filter(f => f.riskFlag).length} sub="High variance features" color="#FF3B30" delay={0.15}/>
       </div>
 
-      <div className="card overflow-x-auto">
-        <table className="data-table">
-          <thead><tr>
-            <th className="w-8">#</th>
-            <th>Group</th><th>Feature</th><th>Phase</th>
-            <th className="text-right">Optimistic</th>
-            <th className="text-right">Pessimistic</th>
-            <th className="text-right">Most Likely</th>
-            <th className="text-right" style={{background:'#eef6ff'}}>Expected</th>
-            <th className="text-right" style={{background:'#eef6ff'}}>Std Dev</th>
-            <th className="text-right" style={{background:'#eef6ff'}}>Dev Hours</th>
-            <th className="text-center">⚠</th>
-            <th></th>
-          </tr></thead>
-          <tbody>
-            {fc.map((f, i) => (
-              <tr key={f.id} className={f.riskFlag ? 'bg-red-50' : ''}>
-                <td className="text-ink-400 text-xs">{i+1}</td>
-                <td><TextInput value={f.group} onChange={v => updateFeature(f.id,'group',v)} placeholder="Module" className="w-28"/></td>
-                <td><TextInput value={f.name} onChange={v => updateFeature(f.id,'name',v)} placeholder="Feature name" className="w-44"/></td>
-                <td>
-                  <SelectInput value={f.phase} onChange={v => updateFeature(f.id,'phase',v)}
-                    options={['Phase 1','Phase 2','Phase 3','Out of Scope']} className="w-28"/>
-                </td>
-                <td className="text-right"><NumInput value={f.optimistic} onChange={v => updateFeature(f.id,'optimistic',v)} step={0.5} className="w-20"/></td>
-                <td className="text-right"><NumInput value={f.pessimistic} onChange={v => updateFeature(f.id,'pessimistic',v)} step={0.5} className="w-20"/></td>
-                <td className="text-right"><NumInput value={f.mostLikely} onChange={v => updateFeature(f.id,'mostLikely',v)} step={0.5} className="w-20"/></td>
-                <td className="text-right money font-semibold" style={{background:'#f0f7ff'}}>{fmt(f.expected, 2)}</td>
-                <td className="text-right money" style={{background:'#f0f7ff'}}>{fmt(f.stdDev, 2)}</td>
-                <td className="text-right money font-semibold" style={{background:'#f0f7ff'}}>{fmtHrs(f.devHours)}</td>
-                <td className="text-center">{f.riskFlag ? <span className="text-red-500 font-bold" title="High variance: (pessimistic-optimistic) > optimistic">⚠</span> : ''}</td>
-                <td className="flex gap-1">
-                  <button onClick={() => duplicateFeature(f)} className="btn-ghost text-xs" title="Duplicate">⧉</button>
-                  <button onClick={() => removeFeature(f.id)} className="btn-danger">✕</button>
-                </td>
+      <div className="glass-card overflow-hidden animate-fade-in-up stagger-2">
+        <div className="overflow-x-auto">
+          <table className="apple-table">
+            <thead>
+              <tr>
+                <th className="w-10">#</th>
+                <th>Group</th><th>Feature</th><th>Phase</th>
+                <th className="text-right">Opt</th>
+                <th className="text-right">Pess</th>
+                <th className="text-right">M.L.</th>
+                <th className="text-right" style={{background:'rgba(0,122,255,0.05)'}}>Expected</th>
+                <th className="text-right" style={{background:'rgba(0,122,255,0.05)'}}>Std Dev</th>
+                <th className="text-right" style={{background:'rgba(0,122,255,0.05)'}}>Dev Hrs</th>
+                <th className="text-center w-10">Risk</th>
+                <th className="w-20"></th>
               </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr className="font-bold" style={{background:'#f7f7f8'}}>
-              <td colSpan={7} className="text-right">Totals:</td>
-              <td className="text-right money">{fmt(fc.reduce((s,f)=>s+f.expected,0), 2)} days</td>
-              <td></td>
-              <td className="text-right money">{fmtHrs(fc.reduce((s,f)=>s+f.devHours,0))}</td>
-              <td colSpan={2}></td>
-            </tr>
-          </tfoot>
-        </table>
+            </thead>
+            <tbody>
+              {fc.map((f, i) => (
+                <tr key={f.id} style={f.riskFlag ? {background:'rgba(255,59,48,0.04)'} : {}}>
+                  <td style={{color:'var(--label-tertiary)', fontSize:12, fontWeight:500}}>{i+1}</td>
+                  <td><TextInput value={f.group} onChange={v => updateFeature(f.id,'group',v)} placeholder="Module" style={{width:110}}/></td>
+                  <td><TextInput value={f.name} onChange={v => updateFeature(f.id,'name',v)} placeholder="Feature name" style={{width:170}}/></td>
+                  <td><SelectInput value={f.phase} onChange={v => updateFeature(f.id,'phase',v)} options={['Phase 1','Phase 2','Phase 3','Out of Scope']} style={{width:120}}/></td>
+                  <td className="text-right"><NumInput value={f.optimistic} onChange={v => updateFeature(f.id,'optimistic',v)} step={0.5} style={{width:75}}/></td>
+                  <td className="text-right"><NumInput value={f.pessimistic} onChange={v => updateFeature(f.id,'pessimistic',v)} step={0.5} style={{width:75}}/></td>
+                  <td className="text-right"><NumInput value={f.mostLikely} onChange={v => updateFeature(f.id,'mostLikely',v)} step={0.5} style={{width:75}}/></td>
+                  <td className="text-right money" style={{fontWeight:600, background:'rgba(0,122,255,0.03)'}}>{fmt(f.expected, 2)}</td>
+                  <td className="text-right money" style={{background:'rgba(0,122,255,0.03)', color:'var(--label-secondary)'}}>{fmt(f.stdDev, 2)}</td>
+                  <td className="text-right money" style={{fontWeight:700, background:'rgba(0,122,255,0.03)'}}>{fmtHrs(f.devHours)}</td>
+                  <td className="text-center">{f.riskFlag ? <span style={{color:'#FF3B30', fontSize:16}} title="High variance">&#9888;</span> : ''}</td>
+                  <td>
+                    <div className="flex gap-1 justify-end">
+                      <button onClick={() => duplicateFeature(f)} className="btn-apple btn-apple-gray btn-apple-xs" title="Duplicate">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                      </button>
+                      <button onClick={() => removeFeature(f.id)} className="btn-apple btn-apple-red btn-apple-xs">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr style={{background:'var(--fill-secondary)'}}>
+                <td colSpan={7} className="text-right" style={{fontWeight:700}}>Totals:</td>
+                <td className="text-right money" style={{fontWeight:700}}>{fmt(fc.reduce((s,f)=>s+f.expected,0), 2)} d</td>
+                <td></td>
+                <td className="text-right money" style={{fontWeight:700}}>{fmtHrs(fc.reduce((s,f)=>s+f.devHours,0))}</td>
+                <td colSpan={2}></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-4 gap-3">
-        {['Phase 1','Phase 2','Phase 3','Out of Scope'].map(ph => (
-          <div key={ph} className="card p-3">
-            <span className={`phase-badge ${PHASE_CLASSES[ph]}`}>{ph}</span>
-            <div className="mt-2 money text-lg font-bold">{fmtHrs(budget.phaseDevHours[ph]||0)}</div>
-            <div className="text-xs text-ink-400">{fc.filter(f => f.phase === ph).length} features</div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+        {['Phase 1','Phase 2','Phase 3','Out of Scope'].map((ph, i) => (
+          <div key={ph} className={`glass-card p-4 animate-fade-in-up stagger-${i+3}`}>
+            <span className={`phase-badge ${PHASE_BADGE[ph]}`}>{ph}</span>
+            <div className="money mt-3" style={{fontSize:22, fontWeight:800}}>{fmtHrs(budget.phaseDevHours[ph]||0)}</div>
+            <div style={{fontSize:13, color:'var(--label-tertiary)', marginTop:2}}>{fc.filter(f => f.phase === ph).length} features</div>
           </div>
         ))}
       </div>
@@ -477,7 +1058,94 @@ function FeaturesTab({ project, setProject, budget }) {
 }
 
 // ═══════════════════════════════════════════════
-// TAB: RISKS
+// TAB: TEAM (#10) — Card-based layout
+// ═══════════════════════════════════════════════
+function TeamTab({ project, setProject, budget }) {
+  const { team } = project;
+  const addMember = () => setProject(p => ({...p, team: [...p.team, defaultTeamMember()]}));
+  const updateMember = (id, field, val) => setProject(p => ({
+    ...p, team: p.team.map(m => m.id === id ? {...m, [field]: val} : m)
+  }));
+  const removeMember = (id) => setProject(p => ({...p, team: p.team.filter(m => m.id !== id)}));
+
+  // Group by role
+  const grouped = {};
+  ROLE_TYPES.forEach(r => { grouped[r] = team.filter(m => m.role === r); });
+
+  const roleColors = {
+    'DEV': '#007AFF', 'QA': '#34C759', 'PM': '#FF9500', 'Arch (mngt)': '#AF52DE',
+    'Tech Lead (mngt)': '#5856D6', 'DevOps': '#FF2D55', 'BA': '#5AC8FA', 'UI/UX': '#FFCC00', 'InfoDev': '#8E8E93'
+  };
+
+  return (
+    <div className="tab-content">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 style={{fontSize:22, fontWeight:700}}>Project Team</h2>
+          <p style={{fontSize:14, color:'var(--label-tertiary)', marginTop:2}}>Define roles, headcount and rates for the project team</p>
+        </div>
+        <button onClick={addMember} className="btn-apple btn-apple-blue btn-apple-sm">
+          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Add Member
+        </button>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <MetricCard label="Headcount" value={budget.totalTeamCount} color="#007AFF" delay={0}/>
+        <MetricCard label="Avg Internal Rate" value={fmtMoney(budget.teamHourlyRate) + '/hr'} color="#5856D6" delay={0.05}/>
+        <MetricCard label="Avg External Rate" value={fmtMoney(budget.avgExtRate) + '/hr'} color="#34C759" delay={0.1}/>
+        <MetricCard label="Roles" value={ROLE_TYPES.filter(r => budget.roleGroups[r].count > 0).length} color="#FF9500" delay={0.15}/>
+      </div>
+
+      {ROLE_TYPES.filter(r => grouped[r].length > 0).map(role => (
+        <div key={role} className="mb-6 animate-fade-in-up">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-3 h-3 rounded-full" style={{background: roleColors[role]}}/>
+            <h3 style={{fontSize:16, fontWeight:700}}>{role}</h3>
+            <span style={{fontSize:13, color:'var(--label-tertiary)'}}>{grouped[role].reduce((s,m)=>s+m.count,0)} member{grouped[role].reduce((s,m)=>s+m.count,0) !== 1 ? 's' : ''}</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {grouped[role].map(m => (
+              <div key={m.id} className="glass-card p-5" style={{borderLeft:`4px solid ${roleColors[role]}`}}>
+                <div className="flex items-start justify-between mb-3">
+                  <TextInput value={m.position} onChange={v => updateMember(m.id,'position',v)} placeholder="Position title" style={{fontSize:15, fontWeight:600, border:'none', padding:0, background:'transparent', width:'calc(100% - 32px)'}}/>
+                  <button onClick={() => removeMember(m.id)} className="btn-apple btn-apple-red btn-apple-xs" style={{marginTop:2}}>
+                    <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', display:'block', marginBottom:4}}>Role</label>
+                    <SelectInput value={m.role} onChange={v => updateMember(m.id,'role',v)} options={ROLE_TYPES}/>
+                  </div>
+                  <div>
+                    <label style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', display:'block', marginBottom:4}}>Count</label>
+                    <NumInput value={m.count} onChange={v => updateMember(m.id,'count',v)} min={1} style={{textAlign:'center'}}/>
+                  </div>
+                  <div>
+                    <label style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', display:'block', marginBottom:4}}>Monthly (Int)</label>
+                    <NumInput value={m.monthlyInternal} onChange={v => updateMember(m.id,'monthlyInternal',v)} step={100}/>
+                  </div>
+                  <div>
+                    <label style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', display:'block', marginBottom:4}}>Hourly (Ext)</label>
+                    <NumInput value={m.externalRate} onChange={v => updateMember(m.id,'externalRate',v)} step={5}/>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div style={{fontSize:13, color:'var(--label-tertiary)', marginTop:8}}>
+        Monthly Internal rate is used for COGS. External hourly rate is the billable rate to client.
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════
+// TAB: RISKS (#11) — Severity coding + probability bars
 // ═══════════════════════════════════════════════
 function RisksTab({ project, setProject, budget }) {
   const { risks } = project;
@@ -489,60 +1157,79 @@ function RisksTab({ project, setProject, budget }) {
 
   const riskCategories = ['HR','Scope','Tech','Customer','Other'];
 
+  const getSeverity = (prob) => {
+    if (prob >= 0.7) return { cls: 'risk-critical', label: 'Critical', color: '#FF3B30' };
+    if (prob >= 0.5) return { cls: 'risk-high', label: 'High', color: '#FF9500' };
+    if (prob >= 0.2) return { cls: 'risk-medium', label: 'Medium', color: '#FFCC00' };
+    return { cls: 'risk-low', label: 'Low', color: '#34C759' };
+  };
+
   return (
-    <div className="fade-in">
-      <div className="flex items-center justify-between mb-4">
+    <div className="tab-content">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-bold">Project Level Risks</h2>
-          <p className="text-sm text-ink-400">Risk register with contingency reserve calculation (EMV-based)</p>
+          <h2 style={{fontSize:22, fontWeight:700}}>Project Risks</h2>
+          <p style={{fontSize:14, color:'var(--label-tertiary)', marginTop:2}}>Risk register with contingency reserve calculation (EMV-based)</p>
         </div>
-        <button onClick={addRisk} className="btn-primary">+ Add Risk</button>
+        <button onClick={addRisk} className="btn-apple btn-apple-blue btn-apple-sm">
+          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Add Risk
+        </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 mb-4">
-        <MetricCard label="Total Risks" value={risks.length} color="ink"/>
-        <MetricCard label="Total EMV Hours" value={fmtHrs(budget.totalRiskEMV)} sub="Expected monetary value" color="accent"/>
-        <MetricCard label="Contingency Reserve" value={fmtHrs(budget.totalContingency)} sub={`${fmtPct(project.inputData.contingencyPct)} of execution + EMV`} color="sea"/>
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <MetricCard label="Total Risks" value={risks.length} color="#FF9500" delay={0}/>
+        <MetricCard label="Total EMV Hours" value={fmtHrs(budget.totalRiskEMV)} sub="Expected monetary value" color="#FF3B30" delay={0.05}/>
+        <MetricCard label="Contingency Reserve" value={fmtHrs(budget.totalContingency)} sub={`${fmtPct(project.inputData.contingencyPct)} of execution + EMV`} color="#007AFF" delay={0.1}/>
       </div>
 
       <div className="space-y-3">
         {risks.map((r, i) => {
           const emv = (r.estimateHours||0) * (r.probability||0);
-          const severity = r.probability >= 0.5 ? 'risk-high' : r.probability >= 0.2 ? 'risk-med' : 'risk-low';
+          const sev = getSeverity(r.probability);
           return (
-            <div key={r.id} className={`card p-4 ${severity}`}>
+            <div key={r.id} className={`glass-card p-5 ${sev.cls} animate-fade-in-up`} style={{animationDelay: `${i * 0.05}s`}}>
               <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <div>
-                    <label className="text-xs font-semibold text-ink-400 block mb-1">Category</label>
-                    <SelectInput value={r.group} onChange={v => updateRisk(r.id,'group',v)} options={riskCategories} className="w-full"/>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="phase-badge" style={{background:`${sev.color}20`, color: sev.color, fontWeight:700}}>{sev.label}</span>
+                    <SelectInput value={r.group} onChange={v => updateRisk(r.id,'group',v)} options={riskCategories} style={{width:100}}/>
+                    <SelectInput value={r.phase} onChange={v => updateRisk(r.id,'phase',v)} options={PHASES} style={{width:130}}/>
                   </div>
-                  <div>
-                    <label className="text-xs font-semibold text-ink-400 block mb-1">Phase</label>
-                    <SelectInput value={r.phase} onChange={v => updateRisk(r.id,'phase',v)} options={PHASES} className="w-full"/>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                    <div>
+                      <label style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', display:'block', marginBottom:4}}>Risk Title</label>
+                      <TextInput value={r.risk} onChange={v => updateRisk(r.id,'risk',v)} placeholder="Risk title"/>
+                    </div>
+                    <div>
+                      <label style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', display:'block', marginBottom:4}}>Description</label>
+                      <TextInput value={r.description} onChange={v => updateRisk(r.id,'description',v)} placeholder="Details"/>
+                    </div>
                   </div>
-                  <div className="col-span-2">
-                    <label className="text-xs font-semibold text-ink-400 block mb-1">Risk</label>
-                    <TextInput value={r.risk} onChange={v => updateRisk(r.id,'risk',v)} placeholder="Risk title" className="w-full"/>
-                  </div>
-                  <div className="col-span-2">
-                    <label className="text-xs font-semibold text-ink-400 block mb-1">Description</label>
-                    <TextInput value={r.description} onChange={v => updateRisk(r.id,'description',v)} placeholder="Details" className="w-full"/>
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-ink-400 block mb-1">Estimate (hours)</label>
-                    <NumInput value={r.estimateHours} onChange={v => updateRisk(r.id,'estimateHours',v)} className="w-full"/>
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-ink-400 block mb-1">Probability %</label>
-                    <PctInput value={r.probability} onChange={v => updateRisk(r.id,'probability',v)} className="w-full"/>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div>
+                      <label style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', display:'block', marginBottom:4}}>Estimate (hrs)</label>
+                      <NumInput value={r.estimateHours} onChange={v => updateRisk(r.id,'estimateHours',v)}/>
+                    </div>
+                    <div>
+                      <label style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', display:'block', marginBottom:4}}>Probability</label>
+                      <PctInput value={r.probability} onChange={v => updateRisk(r.id,'probability',v)}/>
+                    </div>
+                    <div className="col-span-2">
+                      <label style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', display:'block', marginBottom:4}}>Probability</label>
+                      <div className="prob-bar-bg mt-2">
+                        <div className="prob-bar-fill" style={{width: `${Math.min(r.probability * 100, 100)}%`, background: sev.color}}/>
+                      </div>
+                      <div className="flex justify-between mt-1" style={{fontSize:11, color:'var(--label-tertiary)'}}>
+                        <span>0%</span><span>50%</span><span>100%</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="text-right shrink-0">
-                  <div className="text-xs text-ink-400 mb-1">EMV</div>
-                  <div className="money text-lg font-bold">{fmtHrs(emv)}</div>
-                  {r.probability >= 0.5 && <div className="text-xs text-red-600 font-semibold mt-1">⚠ High probability</div>}
-                  <button onClick={() => removeRisk(r.id)} className="btn-danger mt-2">Remove</button>
+                <div className="text-right shrink-0" style={{minWidth:90}}>
+                  <div style={{fontSize:11, fontWeight:600, color:'var(--label-tertiary)', textTransform:'uppercase', letterSpacing:'0.5px'}}>EMV</div>
+                  <div className="money" style={{fontSize:24, fontWeight:800, color: sev.color, marginTop:4}}>{fmtHrs(emv)}</div>
+                  <button onClick={() => removeRisk(r.id)} className="btn-apple btn-apple-red btn-apple-xs" style={{marginTop:12}}>Remove</button>
                 </div>
               </div>
             </div>
@@ -554,289 +1241,116 @@ function RisksTab({ project, setProject, budget }) {
 }
 
 // ═══════════════════════════════════════════════
-// TAB: INPUT DATA / SETTINGS
+// TAB: SETTINGS (#12) — Grouped panels
 // ═══════════════════════════════════════════════
-function InputDataTab({ project, setProject }) {
+function SettingsTab({ project, setProject }) {
   const { inputData: inp, expenses } = project;
   const update = (field, val) => setProject(p => ({...p, inputData: {...p.inputData, [field]: val}}));
   const updateExp = (field, val) => setProject(p => ({...p, expenses: {...p.expenses, [field]: val}}));
 
-  const Section = ({ title, children }) => (
-    <div className="card p-5 mb-4">
-      <h3 className="text-sm font-bold text-ink-500 uppercase tracking-wider mb-3 pb-2 border-b border-ink-100">{title}</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{children}</div>
-    </div>
-  );
-  const Field = ({ label, tip, children }) => (
-    <div>
-      <label className="text-xs font-semibold text-ink-500 block mb-1">{label}</label>
-      {children}
-      {tip && <div className="text-xs text-ink-300 mt-1">{tip}</div>}
-    </div>
-  );
-
   return (
-    <div className="fade-in">
-      <h2 className="text-lg font-bold mb-1">Project Settings</h2>
-      <p className="text-sm text-ink-400 mb-4">Parameters that control the budget calculation engine</p>
+    <div className="tab-content">
+      <h2 style={{fontSize:22, fontWeight:700, marginBottom:4}}>Project Settings</h2>
+      <p style={{fontSize:14, color:'var(--label-tertiary)', marginBottom:24}}>Parameters that control the budget calculation engine</p>
 
-      <Section title="Stabilization & Contingency">
-        <Field label="Stabilization %" tip="10% typical for FPP">
-          <PctInput value={inp.stabilizationPct} onChange={v => update('stabilizationPct',v)} className="w-full"/>
-        </Field>
-        <Field label="Contingency Reserve %" tip="5-10% based on complexity">
-          <PctInput value={inp.contingencyPct} onChange={v => update('contingencyPct',v)} className="w-full"/>
-        </Field>
-      </Section>
+      <SettingsSection title="Stabilization & Contingency">
+        <SettingsField label="Stabilization %" tip="10% typical for FPP">
+          <div className="flex items-center gap-3">
+            <input type="range" min="0" max="50" step="0.5" value={inp.stabilizationPct * 100}
+              onChange={e => update('stabilizationPct', parseFloat(e.target.value)/100)}/>
+            <span className="money" style={{fontWeight:600, minWidth:50, textAlign:'right'}}>{fmtPct(inp.stabilizationPct)}</span>
+          </div>
+        </SettingsField>
+        <SettingsField label="Contingency Reserve %" tip="5-10% based on complexity">
+          <div className="flex items-center gap-3">
+            <input type="range" min="0" max="30" step="0.5" value={inp.contingencyPct * 100}
+              onChange={e => update('contingencyPct', parseFloat(e.target.value)/100)}/>
+            <span className="money" style={{fontWeight:600, minWidth:50, textAlign:'right'}}>{fmtPct(inp.contingencyPct)}</span>
+          </div>
+        </SettingsField>
+      </SettingsSection>
 
-      <Section title="Project Preparation">
-        <Field label="Preparation Weeks" tip="1 week for 3-4 month projects">
-          <NumInput value={inp.prepWeeks} onChange={v => update('prepWeeks',v)} className="w-full"/>
-        </Field>
-        <Field label="Preparation Workload" tip="1.0 = full time">
-          <NumInput value={inp.prepWorkload} onChange={v => update('prepWorkload',v)} step={0.1} className="w-full"/>
-        </Field>
-        <Field label="Preparation Members Count">
-          <NumInput value={inp.prepMembers} onChange={v => update('prepMembers',v)} className="w-full"/>
-        </Field>
-      </Section>
+      <SettingsSection title="Project Preparation">
+        <SettingsField label="Preparation Weeks" tip="1 week for 3-4 month projects">
+          <NumInput value={inp.prepWeeks} onChange={v => update('prepWeeks',v)}/>
+        </SettingsField>
+        <SettingsField label="Preparation Workload" tip="1.0 = full time">
+          <NumInput value={inp.prepWorkload} onChange={v => update('prepWorkload',v)} step={0.1}/>
+        </SettingsField>
+        <SettingsField label="Preparation Members Count">
+          <NumInput value={inp.prepMembers} onChange={v => update('prepMembers',v)}/>
+        </SettingsField>
+      </SettingsSection>
 
-      <Section title="Warranty & UAT">
-        <Field label="Warranty Duration (months)">
-          <NumInput value={inp.warrantyMonths} onChange={v => update('warrantyMonths',v)} className="w-full"/>
-        </Field>
-        <Field label="Warranty Team Workload" tip="0.25 = 25%">
-          <NumInput value={inp.warrantyWorkload} onChange={v => update('warrantyWorkload',v)} step={0.05} className="w-full"/>
-        </Field>
-        <Field label="Warranty Team Members">
-          <NumInput value={inp.warrantyMembers} onChange={v => update('warrantyMembers',v)} className="w-full"/>
-        </Field>
-        <Field label="UAT Team Workload" tip="0.25 = 25%">
-          <NumInput value={inp.uatWorkload} onChange={v => update('uatWorkload',v)} step={0.05} className="w-full"/>
-        </Field>
-        <Field label="UAT Team Members">
-          <NumInput value={inp.uatMembers} onChange={v => update('uatMembers',v)} className="w-full"/>
-        </Field>
-      </Section>
+      <SettingsSection title="Warranty & UAT">
+        <SettingsField label="Warranty Duration (months)">
+          <NumInput value={inp.warrantyMonths} onChange={v => update('warrantyMonths',v)}/>
+        </SettingsField>
+        <SettingsField label="Warranty Team Workload" tip="0.25 = 25%">
+          <NumInput value={inp.warrantyWorkload} onChange={v => update('warrantyWorkload',v)} step={0.05}/>
+        </SettingsField>
+        <SettingsField label="Warranty Team Members">
+          <NumInput value={inp.warrantyMembers} onChange={v => update('warrantyMembers',v)}/>
+        </SettingsField>
+        <SettingsField label="UAT Team Workload" tip="0.25 = 25%">
+          <NumInput value={inp.uatWorkload} onChange={v => update('uatWorkload',v)} step={0.05}/>
+        </SettingsField>
+        <SettingsField label="UAT Team Members">
+          <NumInput value={inp.uatMembers} onChange={v => update('uatMembers',v)}/>
+        </SettingsField>
+      </SettingsSection>
 
-      <Section title="Post-Release">
-        <Field label="Team Release (hrs/person)" tip="Internal ramp-down time">
-          <NumInput value={inp.teamReleaseHoursPerPerson} onChange={v => update('teamReleaseHoursPerPerson',v)} className="w-full"/>
-        </Field>
-        <Field label="Knowledge Transfer (hours)">
-          <NumInput value={inp.knowledgeTransferHours} onChange={v => update('knowledgeTransferHours',v)} className="w-full"/>
-        </Field>
-      </Section>
+      <SettingsSection title="Post-Release">
+        <SettingsField label="Team Release (hrs/person)" tip="Internal ramp-down time">
+          <NumInput value={inp.teamReleaseHoursPerPerson} onChange={v => update('teamReleaseHoursPerPerson',v)}/>
+        </SettingsField>
+        <SettingsField label="Knowledge Transfer (hours)">
+          <NumInput value={inp.knowledgeTransferHours} onChange={v => update('knowledgeTransferHours',v)}/>
+        </SettingsField>
+      </SettingsSection>
 
-      <Section title="Rate & Billing Configuration">
-        <Field label="Hours per Month" tip="Working hours per month">
-          <NumInput value={inp.hoursPerMonth} onChange={v => update('hoursPerMonth',v)} className="w-full"/>
-        </Field>
-        <Field label="Client Discount %" tip="Discount off external rate">
-          <PctInput value={inp.discount} onChange={v => update('discount',v)} className="w-full"/>
-        </Field>
-        <Field label="DPM Target %" tip="Desired project margin">
-          <PctInput value={inp.dpmTarget} onChange={v => update('dpmTarget',v)} className="w-full"/>
-        </Field>
-        <Field label="Expenses % of COGS" tip="Auto-calculated if no manual expenses">
-          <PctInput value={inp.expensesPctOfCogs} onChange={v => update('expensesPctOfCogs',v)} className="w-full"/>
-        </Field>
-      </Section>
+      <SettingsSection title="Rate & Billing Configuration">
+        <SettingsField label="Hours per Month" tip="Working hours per month">
+          <NumInput value={inp.hoursPerMonth} onChange={v => update('hoursPerMonth',v)}/>
+        </SettingsField>
+        <SettingsField label="Client Discount %" tip="Discount off external rate">
+          <div className="flex items-center gap-3">
+            <input type="range" min="0" max="50" step="0.5" value={inp.discount * 100}
+              onChange={e => update('discount', parseFloat(e.target.value)/100)}/>
+            <span className="money" style={{fontWeight:600, minWidth:50, textAlign:'right'}}>{fmtPct(inp.discount)}</span>
+          </div>
+        </SettingsField>
+        <SettingsField label="DPM Target %" tip="Desired project margin">
+          <div className="flex items-center gap-3">
+            <input type="range" min="0" max="60" step="0.5" value={inp.dpmTarget * 100}
+              onChange={e => update('dpmTarget', parseFloat(e.target.value)/100)}/>
+            <span className="money" style={{fontWeight:600, minWidth:50, textAlign:'right'}}>{fmtPct(inp.dpmTarget)}</span>
+          </div>
+        </SettingsField>
+        <SettingsField label="Expenses % of COGS" tip="Auto-calculated if no manual expenses">
+          <div className="flex items-center gap-3">
+            <input type="range" min="0" max="20" step="0.5" value={inp.expensesPctOfCogs * 100}
+              onChange={e => update('expensesPctOfCogs', parseFloat(e.target.value)/100)}/>
+            <span className="money" style={{fontWeight:600, minWidth:50, textAlign:'right'}}>{fmtPct(inp.expensesPctOfCogs)}</span>
+          </div>
+        </SettingsField>
+      </SettingsSection>
 
-      <Section title="Project Expenses ($)">
+      <SettingsSection title="Project Expenses ($)">
         {Object.entries({equipment:'Equipment Purchase',customerVisit:'Customer Visit',businessTrips:'Business Trips',
           bonuses:'Bonuses',teamBuildings:'Team Buildings',education:'Education',licenses:'Licenses',
           infrastructure:'Infrastructure',other:'Other'}).map(([k,label]) => (
-          <Field key={k} label={label}>
-            <NumInput value={project.expenses[k]} onChange={v => updateExp(k,v)} step={100} className="w-full"/>
-          </Field>
+          <SettingsField key={k} label={label}>
+            <NumInput value={project.expenses[k]} onChange={v => updateExp(k,v)} step={100}/>
+          </SettingsField>
         ))}
-      </Section>
+      </SettingsSection>
     </div>
   );
 }
 
 // ═══════════════════════════════════════════════
-// TAB: BUDGET DASHBOARD
-// ═══════════════════════════════════════════════
-function DashboardTab({ project, budget }) {
-  const b = budget;
-
-  const phaseData = ['Phase 1','Phase 2','Phase 3'].map(ph => ({
-    name: ph.replace('Phase ','P'),
-    devHours: b.phaseDevHours[ph]||0,
-    stabHours: b.stabilization[ph]||0,
-    contHours: b.contingency[ph]||0,
-    total: (b.phaseBreakdown[ph]||{}).totalHours||0,
-    cost: (b.phaseBreakdown[ph]||{}).cost||0,
-    revenue: (b.phaseBreakdown[ph]||{}).revenue||0,
-  }));
-
-  return (
-    <div className="fade-in">
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h2 className="text-lg font-bold">Budget Summary</h2>
-          <p className="text-sm text-ink-400">Auto-calculated from team, features, risks and settings</p>
-        </div>
-        <div className="flex gap-2">
-          <button onClick={() => {
-            const data = JSON.stringify(project, null, 2);
-            const blob = new Blob([data], {type:'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `${project.name}-budget.json`; a.click();
-          }} className="btn-ghost">💾 Export JSON</button>
-        </div>
-      </div>
-
-      {/* KEY METRICS */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <MetricCard label="Total Hours" value={fmtHrs(b.totalProjectHours)} sub={`${fmt(b.totalMonths,1)} months`} color="ink"/>
-        <MetricCard label="COGS (Total)" value={fmtMoney(b.cogsTotal)} sub={`Billable: ${fmtMoney(b.cogsBillable)}`} color="sea"/>
-        <MetricCard label="Revenue (Ext Rate)" value={fmtMoney(b.revenueExtRate)} sub={`Rate: ${fmtMoney(b.avgExtRate)}/hr`} color="mint"/>
-        <MetricCard label="DPM" value={fmtPct(b.dpmActual)} sub={`Margin: ${fmtMoney(b.revenueExtRate - b.cogsTotal)}`} color="accent"/>
-      </div>
-
-      {/* HOURS BREAKDOWN */}
-      <div className="card p-5 mb-4">
-        <h3 className="text-sm font-bold text-ink-500 uppercase tracking-wider mb-3">Hours Breakdown</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <table className="w-full text-sm">
-              <tbody>
-                {[
-                  ['Development (Execution)', fmtHrs(b.totalDevHoursExec), 'font-semibold'],
-                  ['  Phase 1', fmtHrs(b.phaseDevHours['Phase 1']||0), 'pl-4 text-ink-400'],
-                  ['  Phase 2', fmtHrs(b.phaseDevHours['Phase 2']||0), 'pl-4 text-ink-400'],
-                  ['  Phase 3', fmtHrs(b.phaseDevHours['Phase 3']||0), 'pl-4 text-ink-400'],
-                  ['Stabilization', fmtHrs(b.totalStabilization), ''],
-                  ['Contingency Reserve', fmtHrs(b.totalContingency), ''],
-                  ['Preparation', fmtHrs(b.prepTotal), ''],
-                  ['Post-Release', fmtHrs(b.postReleaseHours), ''],
-                  ['  Warranty', fmtHrs(b.warrantyHours), 'pl-4 text-ink-400'],
-                  ['  Team Release', fmtHrs(b.teamReleaseHours), 'pl-4 text-ink-400'],
-                  ['  UAT', fmtHrs(b.totalUATHours), 'pl-4 text-ink-400'],
-                  ['  Knowledge Transfer', fmtHrs(b.knowledgeTransferHours), 'pl-4 text-ink-400'],
-                ].map(([label, val, cls], i) => (
-                  <tr key={i} className={cls}>
-                    <td className="py-1">{label}</td>
-                    <td className="py-1 text-right money">{val}</td>
-                  </tr>
-                ))}
-                <tr className="border-t-2 border-ink-900 font-bold text-lg">
-                  <td className="pt-2">TOTAL PROJECT</td>
-                  <td className="pt-2 text-right money">{fmtHrs(b.totalProjectHours)}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div>
-            {/* Visual bar chart */}
-            <div className="space-y-2">
-              {phaseData.map(p => {
-                const maxH = Math.max(...phaseData.map(x => x.total), 1);
-                return (
-                  <div key={p.name}>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="font-semibold">{p.name}</span>
-                      <span className="money">{fmtHrs(p.total)}</span>
-                    </div>
-                    <div className="h-6 bg-ink-100 rounded-full overflow-hidden flex">
-                      <div className="h-full bg-sea rounded-l-full" style={{width:`${(p.devHours/maxH)*100}%`}} title={`Dev: ${fmtHrs(p.devHours)}`}></div>
-                      <div className="h-full bg-yellow-400" style={{width:`${(p.stabHours/maxH)*100}%`}} title={`Stabilization: ${fmtHrs(p.stabHours)}`}></div>
-                      <div className="h-full bg-red-400 rounded-r-full" style={{width:`${(p.contHours/maxH)*100}%`}} title={`Contingency: ${fmtHrs(p.contHours)}`}></div>
-                    </div>
-                  </div>
-                );
-              })}
-              <div className="flex gap-4 text-xs mt-2">
-                <span className="flex items-center gap-1"><span className="w-3 h-3 bg-sea rounded-sm"></span> Dev</span>
-                <span className="flex items-center gap-1"><span className="w-3 h-3 bg-yellow-400 rounded-sm"></span> Stabilization</span>
-                <span className="flex items-center gap-1"><span className="w-3 h-3 bg-red-400 rounded-sm"></span> Contingency</span>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <h4 className="text-xs font-semibold text-ink-400 uppercase mb-2">Out of Scope</h4>
-              <div className="money text-lg font-bold">{fmtHrs(b.phaseDevHours['Out of Scope']||0)}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* FINANCIAL SUMMARY */}
-      <div className="card p-5 mb-4">
-        <h3 className="text-sm font-bold text-ink-500 uppercase tracking-wider mb-3">Financial Summary</h3>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-ink-200">
-              <th className="text-left py-2 text-xs text-ink-400">Metric</th>
-              <th className="text-right py-2 text-xs text-ink-400">DPM-based</th>
-              <th className="text-right py-2 text-xs text-ink-400">Ext Rate</th>
-              <th className="text-right py-2 text-xs text-ink-400">Ext Rate (Disc)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td className="py-2">Revenue</td><td className="text-right money">{fmtMoney(b.revenueDPM)}</td><td className="text-right money">{fmtMoney(b.revenueExtRate)}</td><td className="text-right money">{fmtMoney(b.revenueExtRateDisc)}</td></tr>
-            <tr><td className="py-2">COGS</td><td className="text-right money" colSpan={3}>{fmtMoney(b.cogsTotal)}</td></tr>
-            <tr><td className="py-2">  of which expenses</td><td className="text-right money text-ink-400" colSpan={3}>{fmtMoney(b.autoExpenses)}</td></tr>
-            <tr className="border-t border-ink-200 font-bold">
-              <td className="py-2">Gross Profit</td>
-              <td className="text-right money">{fmtMoney(b.revenueDPM - b.cogsTotal)}</td>
-              <td className="text-right money">{fmtMoney(b.revenueExtRate - b.cogsTotal)}</td>
-              <td className="text-right money">{fmtMoney(b.revenueExtRateDisc - b.cogsTotal)}</td>
-            </tr>
-            <tr>
-              <td className="py-2">DPM %</td>
-              <td className="text-right money">{b.revenueDPM > 0 ? fmtPct((b.revenueDPM - b.cogsTotal)/b.revenueDPM) : '—'}</td>
-              <td className="text-right money">{fmtPct(b.dpmActual)}</td>
-              <td className="text-right money">{b.revenueExtRateDisc > 0 ? fmtPct((b.revenueExtRateDisc - b.cogsTotal)/b.revenueExtRateDisc) : '—'}</td>
-            </tr>
-            <tr>
-              <td className="py-2">Revenue per Hour</td>
-              <td className="text-right money">{b.totalProjectHours > 0 ? fmtMoney(b.revenueDPM/b.totalProjectHours) : '—'}</td>
-              <td className="text-right money">{fmtMoney(b.avgExtRate)}</td>
-              <td className="text-right money">{fmtMoney(b.avgExtRateDisc)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* TEAM SUMMARY */}
-      <div className="card p-5 mb-4">
-        <h3 className="text-sm font-bold text-ink-500 uppercase tracking-wider mb-3">Team Composition</h3>
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-          {ROLE_TYPES.filter(r => b.roleGroups[r].count > 0).map(r => (
-            <div key={r} className="text-center p-3 rounded-lg bg-ink-50">
-              <div className="text-2xl font-bold">{b.roleGroups[r].count}</div>
-              <div className="text-xs text-ink-400 font-semibold">{r}</div>
-              <div className="text-xs money text-ink-300">{fmtMoney(b.roleAvgRate[r])}/hr</div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-3 flex gap-6 text-sm">
-          <span><span className="text-ink-400">Total headcount:</span> <strong>{b.totalTeamCount}</strong></span>
-          <span><span className="text-ink-400">Avg internal rate:</span> <strong className="money">{fmtMoney(b.teamHourlyRate)}/hr</strong></span>
-          <span><span className="text-ink-400">Avg external rate:</span> <strong className="money">{fmtMoney(b.avgExtRate)}/hr</strong></span>
-        </div>
-      </div>
-
-      {/* TIMELINE */}
-      <div className="card p-5">
-        <h3 className="text-sm font-bold text-ink-500 uppercase tracking-wider mb-3">Timeline Estimate</h3>
-        <div className="grid grid-cols-4 gap-4 text-center">
-          <div><div className="text-2xl font-bold">{fmt(project.inputData.prepWeeks, 0)}</div><div className="text-xs text-ink-400">Prep weeks</div></div>
-          <div><div className="text-2xl font-bold">{fmt(b.execWeeks, 1)}</div><div className="text-xs text-ink-400">Execution weeks</div></div>
-          <div><div className="text-2xl font-bold">{fmt(b.totalWeeks, 1)}</div><div className="text-xs text-ink-400">Total weeks</div></div>
-          <div><div className="text-2xl font-bold">{fmt(b.totalMonths, 1)}</div><div className="text-xs text-ink-400">Total months</div></div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════
-// MAIN APP
+// MAIN APP (#13 Navigation + #7 Dark Mode)
 // ═══════════════════════════════════════════════
 function App() {
   const [project, setProject] = useState(() => {
@@ -847,20 +1361,51 @@ function App() {
     return defaultProject();
   });
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [isDark, setIsDark] = useState(() => {
+    try { return localStorage.getItem('fpp-dark-mode') === 'true'; } catch(e) { return false; }
+  });
 
   useEffect(() => {
     try { localStorage.setItem('fpp-budget-project', JSON.stringify(project)); } catch(e) {}
   }, [project]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDark);
+    try { localStorage.setItem('fpp-dark-mode', String(isDark)); } catch(e) {}
+  }, [isDark]);
+
+  // Keyboard navigation (#13)
+  useEffect(() => {
+    const tabIds = ['dashboard','features','team','risks','settings'];
+    const handler = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+      const idx = tabIds.indexOf(activeTab);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        setActiveTab(tabIds[(idx + 1) % tabIds.length]);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        setActiveTab(tabIds[(idx - 1 + tabIds.length) % tabIds.length]);
+      } else if (e.key >= '1' && e.key <= '5') {
+        e.preventDefault();
+        setActiveTab(tabIds[parseInt(e.key) - 1]);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [activeTab]);
+
   const budget = useMemo(() => calcBudget(project), [project]);
 
   const tabs = [
-    { id:'dashboard', label:'📊 Dashboard', icon:'📊' },
-    { id:'features', label:'🧩 Features', icon:'🧩' },
-    { id:'team', label:'👥 Team', icon:'👥' },
-    { id:'risks', label:'⚠️ Risks', icon:'⚠️' },
-    { id:'settings', label:'⚙️ Settings', icon:'⚙️' },
+    { id:'dashboard', label:'Dashboard', icon: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> },
+    { id:'features', label:'Features', icon: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg> },
+    { id:'team', label:'Team', icon: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> },
+    { id:'risks', label:'Risks', icon: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg> },
+    { id:'settings', label:'Settings', icon: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> },
   ];
+
+  const breadcrumb = tabs.find(t => t.id === activeTab)?.label || '';
 
   const handleImportJSON = () => {
     const input = document.createElement('input');
@@ -875,54 +1420,79 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen">
-      {/* HEADER */}
-      <header className="bg-ink-950 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center font-bold text-sm">FPP</div>
-            <div>
+    <div className="min-h-screen" style={{background:'var(--bg)', transition:'background 0.3s'}}>
+      {/* HEADER — Glass morphism */}
+      <header className="glass sticky top-0 z-50" style={{borderBottom:'1px solid var(--separator)'}}>
+        <div className="max-w-7xl mx-auto px-5">
+          <div className="flex items-center justify-between" style={{height:56}}>
+            <div className="flex items-center gap-3">
+              <div style={{width:32, height:32, borderRadius:10, background:'linear-gradient(135deg, #007AFF, #5856D6)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontWeight:800, fontSize:13}}>F</div>
               <input
                 type="text" value={project.name}
                 onChange={e => setProject(p => ({...p, name: e.target.value}))}
-                className="bg-transparent border-none text-white font-bold text-lg focus:outline-none focus:border-b focus:border-accent"
+                style={{background:'transparent', border:'none', color:'var(--label)', fontWeight:700, fontSize:18, outline:'none', width:250}}
               />
             </div>
+            <div className="flex items-center gap-2">
+              {/* Dark mode toggle */}
+              <button onClick={() => setIsDark(!isDark)} className="btn-apple btn-apple-gray btn-apple-xs" title="Toggle dark mode" style={{width:34, height:34, padding:0, borderRadius:10}}>
+                {isDark
+                  ? <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                  : <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                }
+              </button>
+              <button onClick={handleImportJSON} className="btn-apple btn-apple-gray btn-apple-xs" style={{fontSize:13, padding:'6px 12px'}}>
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                Import
+              </button>
+              <button onClick={() => { if (confirm('Reset all data to defaults?')) setProject(defaultProject()); }} className="btn-apple btn-apple-red btn-apple-xs" style={{fontSize:13, padding:'6px 12px'}}>Reset</button>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button onClick={handleImportJSON} className="text-xs text-ink-300 hover:text-white px-3 py-1 border border-ink-700 rounded-lg">📂 Import</button>
-            <button onClick={() => {
-              if (confirm('Reset all data to defaults?')) setProject(defaultProject());
-            }} className="text-xs text-ink-300 hover:text-red-400 px-3 py-1 border border-ink-700 rounded-lg">🗑 Reset</button>
-          </div>
-        </div>
-        {/* TAB BAR */}
-        <div className="max-w-7xl mx-auto px-4">
-          <nav className="flex gap-0">
-            {tabs.map(t => (
-              <button key={t.id} onClick={() => setActiveTab(t.id)}
-                className={`px-5 py-3 text-sm transition-all ${activeTab === t.id ? 'tab-active text-white border-accent' : 'tab-inactive text-ink-400 hover:text-ink-200'}`}>
-                {t.label}
+
+          {/* Tab bar */}
+          <nav className="flex gap-0 -mb-px" role="tablist">
+            {tabs.map((t, i) => (
+              <button key={t.id} onClick={() => setActiveTab(t.id)} role="tab" aria-selected={activeTab === t.id}
+                className="flex items-center gap-2 px-4 py-3 text-sm transition-all relative"
+                style={{
+                  fontWeight: activeTab === t.id ? 600 : 500,
+                  color: activeTab === t.id ? '#007AFF' : 'var(--label-tertiary)',
+                  borderBottom: activeTab === t.id ? '2.5px solid #007AFF' : '2.5px solid transparent',
+                }}>
+                {t.icon}
+                <span className="hidden sm:inline">{t.label}</span>
               </button>
             ))}
           </nav>
         </div>
       </header>
 
+      {/* Breadcrumb */}
+      <div className="max-w-7xl mx-auto px-5 pt-4 pb-2">
+        <div className="flex items-center gap-2" style={{fontSize:13, color:'var(--label-tertiary)'}}>
+          <span>{project.name}</span>
+          <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          <span style={{color:'var(--label)', fontWeight:600}}>{breadcrumb}</span>
+        </div>
+      </div>
+
       {/* CONTENT */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-5 pb-8" key={activeTab}>
         {activeTab === 'dashboard' && <DashboardTab project={project} budget={budget}/>}
         {activeTab === 'features' && <FeaturesTab project={project} setProject={setProject} budget={budget}/>}
-        {activeTab === 'team' && <TeamTab project={project} setProject={setProject}/>}
+        {activeTab === 'team' && <TeamTab project={project} setProject={setProject} budget={budget}/>}
         {activeTab === 'risks' && <RisksTab project={project} setProject={setProject} budget={budget}/>}
-        {activeTab === 'settings' && <InputDataTab project={project} setProject={setProject}/>}
+        {activeTab === 'settings' && <SettingsTab project={project} setProject={setProject}/>}
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-ink-100 py-4 mt-8">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs text-ink-300">
-          <span>Project Budget Calculator — FPP v1.0 • Based on ELEKS FPP Template v7.3</span>
-          <span>Data saved in browser localStorage</span>
+      <footer style={{borderTop:'1px solid var(--separator)', padding:'16px 0', marginTop:32}}>
+        <div className="max-w-7xl mx-auto px-5 flex items-center justify-between" style={{fontSize:12, color:'var(--label-tertiary)'}}>
+          <span>Project Budget Calculator — FPP v2.0</span>
+          <div className="flex items-center gap-4">
+            <span>Arrow keys to navigate tabs</span>
+            <span>Data saved in localStorage</span>
+          </div>
         </div>
       </footer>
     </div>
